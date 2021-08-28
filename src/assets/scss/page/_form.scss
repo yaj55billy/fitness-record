@@ -1,0 +1,81 @@
+input,
+input[type="text"],
+input[type="checkbox"],
+input[type="radio"],
+input[type="email"],
+input[type="date"],
+textarea,
+select {
+  border: solid 1px #ccc;
+  border-radius: 4px;
+  background-color: white;
+  // +text_set(16px,500,#555);
+  font-family: "微軟正黑體", "Microsoft JhengHei", serif;
+  height: 32px;
+  padding-left: 6px;
+  transition: border 0.5s;
+  &:hover,
+  &:focus,
+  &.active {
+    border: solid 1px $secondary;
+  }
+  &.fail {
+    border: solid 1px red;
+  }
+  &[disabled] {
+    background-color: #ccc;
+  }
+}
+
+input[type="date"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.form {
+  &-group {
+    // 共用
+    @include clearfix;
+    width: 88%;
+    margin-top: 10px;
+
+    &__label,
+    &__input,
+    &__select {
+      display: block;
+      float: left;
+    }
+    &__label {
+      width: 85px;
+      transform: translateY(4px);
+    }
+    &__input,
+    &__select {
+      width: calc(100% - 85px);
+    }
+  }
+
+  &-train {
+    margin-top: 25px;
+    &__list {
+      &::before {
+        content: "";
+        display: block;
+        width: 88%;
+        height: 1px;
+        background-color: #ddd;
+        margin-top: 12px;
+      }
+      &:nth-child(1) {
+        &::before {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &-conctrl {
+    text-align: center;
+    margin-top: 25px;
+  }
+}

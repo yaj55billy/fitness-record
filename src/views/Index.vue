@@ -1,13 +1,20 @@
 <template>
-  <div class="container">
-    <div class="home">
-      <router-link to=""></router-link>
-
-      <!-- 带查询参数，下面的结果为 /register?plan=private -->
-      <!-- <router-link :to="{ path: 'register', query: { plan: 'private' } }"
-        >Register</router-link> -->
-    </div>
-  </div>
+  <h2 class="page-title">選擇您的運動項目</h2>
+  <ul class="exercise">
+    <li class="exercise-list">
+      <div class="exercise-list__pic">
+        <img
+          src="@/assets/img/banner-squat.jpg"
+          alt="from unsplash Sergio Pedemonte"
+        />
+        <h4 class="exercise-list__text">深蹲</h4>
+      </div>
+      <div class="exercise-list__link">
+        <router-link to="/add" class="btn">新增紀錄</router-link>
+        <router-link to="/view" class="btn">查看紀錄</router-link>
+      </div>
+    </li>
+  </ul>
 </template>
 
 <script>

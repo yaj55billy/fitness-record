@@ -1,11 +1,8 @@
 @import "./reset";
-@import "./utils";
-@import "./common";
-
-/* layout 共用元素 */
-// @import "layout/frame";
-// @import "layout/header";
-// @import "layout/footer";
+@import "./utils"; // 變數、mixin
+@import "./common"; // 共用
+@import "./page/index";
+@import "./page/form";
 
 /* // 元件  */
 // @import "components/ani";

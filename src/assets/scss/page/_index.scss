@@ -1,0 +1,22 @@
+.exercise {
+  &-list {
+    &__pic {
+      position: relative;
+    }
+    &__text {
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      padding: 5px 15px;
+      background-color: rgba(255, 255, 255, 0.5);
+      color: $secondary;
+      font-size: $font-size-md;
+      font-weight: 700;
+      text-align: right;
+    }
+    &__link {
+      text-align: center;
+    }
+  }
+}

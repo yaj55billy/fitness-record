@@ -12,9 +12,11 @@ export default {
 
 <template>
   <Header />
-  <div class="container">
-    <router-view />
-  </div>
+  <main class="content">
+    <div class="container">
+      <router-view />
+    </div>
+  </main>
   <Footer />
 </template>
 

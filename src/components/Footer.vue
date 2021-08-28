@@ -3,21 +3,10 @@ export default {};
 </script>
 
 <template>
-  <div class="container">
-    <footer>
-      <p>Copyright ...</p>
-    </footer>
-  </div>
+  <footer class="footer">
+    Copyright © 2021 FitRecord All Rights Reserved. <br />
+    僅個人學習，無任何商業用途
+  </footer>
 </template>
 
-<style lang="scss" scoped>
-footer {
-  background-color: aquamarine;
-  padding: 12px 0;
-  p {
-    font-size: 16px;
-    font-weight: 700;
-    color: #333;
-  }
-}
-</style>
+<style></style>
