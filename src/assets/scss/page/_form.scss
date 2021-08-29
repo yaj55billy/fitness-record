@@ -63,7 +63,7 @@ input[type="date"] {
         display: block;
         width: 88%;
         height: 1px;
-        background-color: #ddd;
+        background-color: $divideLine;
         margin-top: 12px;
       }
       &:nth-child(1) {

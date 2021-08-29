@@ -1,0 +1,67 @@
+.train {
+  overflow: hidden;
+  transform: scaleY(1);
+  transform-origin: top;
+  &-list {
+    margin-top: 15px;
+    &::before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: $divideLine;
+      margin-bottom: 15px;
+    }
+    &:nth-child(1) {
+      margin-top: 0;
+      &::before {
+        margin-bottom: 0;
+        display: none;
+      }
+    }
+  }
+
+  &-item {
+    @include clearfix();
+    &__head,
+    &__body {
+      float: left;
+      font-size: $font-size-base;
+      color: $secondary;
+    }
+
+    &__head {
+      width: 80px;
+      font-weight: 700;
+    }
+    &__body {
+      width: calc(100% - 80px);
+    }
+  }
+  &-btnarea {
+    text-align: center;
+    @media (min-width: 768px) {
+      text-align: left;
+    }
+  }
+}
+
+.collapse-enter-active,
+.collapse-leave-active {
+  transition: max-height 0.3s;
+}
+
+.collapse-enter-from {
+  max-height: 0px;
+}
+.collapse-enter-to {
+  max-height: 9999px;
+  transition-timing-function: cubic-bezier(0.5, 0, 1, 0);
+}
+.collapse-leave-from {
+  max-height: 9999px;
+  transition-timing-function: cubic-bezier(0.5, 0, 1, 0);
+}
+.collapse-leave-to {
+  max-height: 0px;
+}

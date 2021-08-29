@@ -1,25 +1,40 @@
 <template>
   <h2 class="page-title">
     列表紀錄
+    <i
+      class="fas fa-chevron-up page-title__collapse"
+      :class="{ active: isShow }"
+      @click.prevent="triggerCollapse"
+    ></i>
   </h2>
-  <ul class="train">
-    <li v-for="data in squatData" :key="data.id" class="train-list">
-      <div class="train-item">訓練日期: {{ data.date }}</div>
-
-      <div>
-        <span>訓練細節:</span>
-        <div v-for="detail in data.train" :key="detail">
-          重量: {{ detail.load }} kg、次數: {{ detail.rep }}、組數:
-          {{ detail.set }}
+  <transition name="collapse">
+    <ul v-show="isShow" class="train" ref="train">
+      <li v-for="data in squatData" :key="data.id" class="train-list">
+        <div class="train-item">
+          <h4 class="train-item__head">訓練日期:</h4>
+          <div class="train-item__body">{{ data.date }}</div>
         </div>
-      </div>
-
-      <div class="train-item">總訓練量: {{ data.totalTrain }}</div>
-
-      <a @click.prevent="editRecord(data.id)" class="btn btn-sm">編輯</a>
-      <a @click.prevent="editRecord(data.id)" class="btn btn-sm">刪除</a>
-    </li>
-  </ul>
+        <div class="train-item">
+          <h4 class="train-item__head">訓練細節:</h4>
+          <ul class="train-item__body">
+            <li v-for="detail in data.train" :key="detail">
+              重量: {{ detail.load }} kg、次數: {{ detail.rep }}、組數:
+              {{ detail.set }}
+            </li>
+          </ul>
+        </div>
+        <div class="train-item">
+          <h4 class="train-item__head">總訓練量:</h4>
+          <div class="train-item__body">{{ data.totalTrain }}</div>
+        </div>
+        <div class="train-btnarea">
+          <a @click.prevent="editRecord(data.id)" class="btn btn-sm">編輯</a>
+          <a @click.prevent="editRecord(data.id)" class="btn btn-sm">刪除</a>
+        </div>
+      </li>
+    </ul>
+  </transition>
+  <br />
   <h2 class="page-title">圖表</h2>
 
   <Chart></Chart>
@@ -36,7 +51,7 @@ import Chart from "@/components/Chart.vue";
 import Lightbox from "@/components/Lightbox.vue";
 import axios from "axios";
 
-import { onMounted, ref, computed } from "vue";
+import { onMounted, onUpdated, ref, computed } from "vue";
 import { useStore } from "vuex";
 export default {
   components: {
@@ -48,7 +63,20 @@ export default {
     const store = useStore();
     const squatData = computed(() => store.getters.squatData);
 
+    const train = ref(null);
+    const trainHeight = ref(0);
+
+    onUpdated(() => {
+      trainHeight.value = train.value.getBoundingClientRect().height;
+    });
+
     onMounted(() => {});
+
+    const isShow = ref(true);
+
+    const triggerCollapse = () => {
+      isShow.value = !isShow.value;
+    };
 
     const editRecord = (id) => {
       // let url = `https://fitness-api-server.herokuapp.com/squatdata/${id}`;
@@ -128,6 +156,10 @@ export default {
       editRecord,
       testPost,
       testDel,
+      triggerCollapse,
+      isShow,
+      train, // element
+      trainHeight,
     };
   },
 };
