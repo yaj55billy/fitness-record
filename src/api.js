@@ -6,7 +6,12 @@ const recordRequest = axios.create({
 
 // get
 export const apiGetSquatData = () =>
-  recordRequest.get("/squatdata?_sort=date&_order=asc"); // 參數照日期排列
+  recordRequest.get("/squatdata?_sort=date&_order=desc");
+// desc 日期由大至小； asc 相反
+
+// get
+export const apiGetSingleSquatData = (id) =>
+  recordRequest.get(`/squatdata/${id}`);
 
 // post
 export const apiPostSquatData = (data) =>

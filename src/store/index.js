@@ -10,7 +10,6 @@ export default createStore({
       state.squatData = payload;
     },
     isLoadingChange(state) {
-      console.log(2);
       state.isLoading = !state.isLoading;
     },
   },
@@ -25,7 +24,6 @@ export default createStore({
       }
     },
     isLoadingHandler({ commit }) {
-      console.log(1);
       commit("isLoadingChange");
     },
   },

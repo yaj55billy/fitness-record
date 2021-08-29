@@ -1,49 +1,40 @@
 <template>
-  <div class="lightbox">
-    <div class="modal-mask" :style="modalStyle">
-      <div class="modal-container" @click.self="toggleModal">
+  <div class="lightbox" :class="{ open: props.lightboxStatus }">
+    <div class="modal-mask" @click.self="triggerBack">
+      <div class="modal-container">
         <div class="modal-body">
+          <i class="fas fa-times modal-close" @click.self="triggerBack"></i>
           <header>
             <slot name="header">Default Header</slot>
           </header>
           <hr />
           <main>
-            <slot>Default Body</slot>
+            <slot name="main">Default Body</slot>
           </main>
-          <hr />
-          <footer>
-            <slot name="footer">Default Footer</slot>
-          </footer>
         </div>
       </div>
     </div>
-
-    <button @click="isShow = true">Click Me</button>
   </div>
-  <!-- <Formfill /> -->
 </template>
 
 <script>
-// import Formfill from "./Formfill.vue";
 export default {
-  // components: {
-  //   Formfill,
-  // },
-  data: () => ({
-    isShow: false,
-  }),
-  computed: {
-    modalStyle() {
-      return {
-        display: this.isShow ? "" : "none",
-      };
+  props: {
+    lightboxStatus: {
+      type: Boolean,
+      default: true,
     },
   },
-  methods: {
-    toggleModal() {
-      console.log("click");
-      this.isShow = !this.isShow;
-    },
+  emits: ["triggerBack"],
+  setup(props, context) {
+    const triggerBack = () => {
+      context.emit("triggerBack");
+    };
+
+    return {
+      props,
+      triggerBack,
+    };
   },
 };
 </script>

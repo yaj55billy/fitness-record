@@ -3,12 +3,12 @@
     列表紀錄
     <i
       class="fas fa-chevron-up page-title__collapse"
-      :class="{ active: !isShow }"
-      @click.prevent="triggerCollapse"
+      :class="{ active: !listStatus }"
+      @click.prevent="changeListStatus"
     ></i>
   </h2>
   <transition name="collapse">
-    <ul v-show="isShow" class="train" ref="train">
+    <ul v-show="listStatus" class="train">
       <li v-for="data in squatData" :key="data.id" class="train-list">
         <div class="train-item">
           <h4 class="train-item__head">訓練日期:</h4>
@@ -29,7 +29,7 @@
         </div>
         <div class="train-btnarea">
           <a @click.prevent="editRecord(data.id)" class="btn btn-sm">編輯</a>
-          <a @click.prevent="editRecord(data.id)" class="btn btn-sm">刪除</a>
+          <a @click.prevent="deleteRecord(data.id)" class="btn btn-sm">刪除</a>
         </div>
       </li>
     </ul>
@@ -37,120 +37,85 @@
   <br />
   <h2 class="page-title">圖表</h2>
 
-  <Chart></Chart>
-  <Lightbox>
-    <!-- <template v-slot:header>
-      <h2>008JS 好棒棒!</h2>
+  <!-- <Chart></Chart> -->
+  <Lightbox
+    :lightboxStatus="editLightboxStatus"
+    @triggerBack="changeLightboxStatus"
+  >
+    <template v-slot:header>
+      編輯紀錄
     </template>
-
-    <template v-slot:footer>
-      <h2>大家快來買！</h2>
+    <template v-slot:main>
+      <FormEdit
+        :passEditData="saveEditData"
+        @triggerBack="changeLightboxStatus"
+      ></FormEdit>
     </template>
-
-    <div>
-      <a
-        target="_blank"
-        href="https://www.tenlong.com.tw/products/9789864344130"
-        >購書傳送門</a
-      >
-    </div> -->
-    <Formfill></Formfill>
   </Lightbox>
   <br />
-  <br />
-  <button type="button" @click="testPost">POST 按鈕</button>
-  <button type="button" @click="testDel">Del 按鈕</button>
-  <button type="button" @click="editRecord(7)">編輯 按鈕</button>
 </template>
 
 <script>
-import Chart from "@/components/Chart.vue";
+// import Chart from "@/components/Chart.vue";
 import Lightbox from "@/components/Lightbox.vue";
-import axios from "axios";
-import Formfill from "@/components/Formfill.vue";
-
-import { onMounted, onUpdated, ref, computed } from "vue";
+import FormEdit from "@/components/FormEdit.vue";
+import { apiGetSingleSquatData, apiDeleteSquatData } from "@/api.js";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 export default {
   components: {
-    Chart,
+    // Chart,
     Lightbox,
-    Formfill,
+    FormEdit,
   },
   setup() {
-    const data = ref([]);
     const store = useStore();
     const squatData = computed(() => store.getters.squatData);
+    const listStatus = ref(true);
+    const saveEditData = ref({});
+    const editLightboxStatus = ref(false);
 
-    const train = ref(null);
-    const trainHeight = ref(0);
+    const changeListStatus = () => {
+      listStatus.value = !listStatus.value;
+    };
 
-    onUpdated(() => {
-      trainHeight.value = train.value.getBoundingClientRect().height;
-    });
-
-    onMounted(() => {});
-
-    const isShow = ref(true);
-
-    const triggerCollapse = () => {
-      isShow.value = !isShow.value;
+    const changeLightboxStatus = () => {
+      editLightboxStatus.value = !editLightboxStatus.value;
     };
 
     const editRecord = (id) => {
-      // let url = `https://fitness-api-server.herokuapp.com/squatdata/${id}`;
-      const obj = {
-        id: id,
-        date: "2021-08-28",
-        train: [
-          {
-            load: 100,
-            rep: 8,
-            set: 5,
-          },
-        ],
-      };
-      // store.dispatch("putDataAction", obj);
-      axios
-        .put(
-          `https://fitness-api-server.herokuapp.com/squatdata/${obj.id}`,
-          obj
-        )
-        .then(function(res) {
-          // console.log(res);
-          store.dispatch("getSquatData");
-          // console.log(res);
+      apiGetSingleSquatData(id)
+        .then((res) => {
+          saveEditData.value = res.data;
+          changeLightboxStatus();
         })
-        .catch(function(e) {
-          console.log(e);
-        });
+        .catch((e) => {});
     };
 
-    const testDel = () => {
-      const id = 7;
-      // store.dispatch("deleteDataAction", delNum);
-      axios
-        .delete(`https://fitness-api-server.herokuapp.com/squatdata/${id}`)
-        .then(function(res) {
-          console.log("delete");
-          store.dispatch("getSquatData");
-          // console.log(1);
-          // console.log(res);
-          // commit("deleteDataMutation", id);
-        })
-        .catch(function(e) {
-          console.log(e);
-        });
+    const deleteRecord = (id) => {
+      console.log("刪除");
+      let deleteCheck = confirm("您確定要刪除此筆資料嗎? (刪除後無法復原)");
+      if (deleteCheck) {
+        store.dispatch("isLoadingHandler");
+        apiDeleteSquatData(id)
+          .then(() => {
+            store.dispatch("getSquatData").then(() => {
+              store.dispatch("isLoadingHandler");
+            });
+          })
+          .catch((e) => {});
+      }
     };
 
     return {
       squatData,
-      editRecord,
-      testDel,
-      triggerCollapse,
-      isShow,
-      train, // element
-      trainHeight,
+      listStatus,
+      changeListStatus,
+      editRecord, // about edit
+      saveEditData, // about edit
+      editLightboxStatus, // about edit
+      changeLightboxStatus, // about lightbox
+      deleteRecord, // about delete
     };
   },
 };

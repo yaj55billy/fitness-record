@@ -74,10 +74,12 @@
 <script>
 import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import { apiPostSquatData } from "@/api.js";
 export default {
   setup() {
     const store = useStore();
+    const router = useRouter();
 
     const trainDate = ref("");
 
@@ -139,6 +141,7 @@ export default {
         .then(function() {
           store.dispatch("getSquatData").then(() => {
             store.dispatch("isLoadingHandler");
+            router.push({ path: "/view" });
           });
         })
         .catch(function(e) {

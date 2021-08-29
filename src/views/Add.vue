@@ -1,14 +1,14 @@
 <template>
   <h2 class="page-title">新增紀錄</h2>
-  <Formfill />
+  <FormAdd />
 </template>
 
 <script>
-import Formfill from "@/components/Formfill.vue";
+import FormAdd from "@/components/FormAdd.vue";
 
 export default {
   components: {
-    Formfill,
+    FormAdd,
   },
 };
 </script>
