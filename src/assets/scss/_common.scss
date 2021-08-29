@@ -105,14 +105,18 @@ img {
   &.btn-sm {
     padding: 2px 16px;
   }
+  &.btn-lg {
+    border-radius: 4px;
+    padding: 10px 36px;
+  }
+}
+
+* {
+  outline: none;
+  box-sizing: border-box;
 }
 
 //   @media(min-width:992px)
 //     width: 970px
 //   @media(min-width:1200px)
 //     width: 1140px
-
-* {
-  outline: none;
-  box-sizing: border-box;
-}

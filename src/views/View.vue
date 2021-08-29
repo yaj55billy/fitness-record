@@ -3,7 +3,7 @@
     列表紀錄
     <i
       class="fas fa-chevron-up page-title__collapse"
-      :class="{ active: isShow }"
+      :class="{ active: !isShow }"
       @click.prevent="triggerCollapse"
     ></i>
   </h2>
@@ -107,33 +107,6 @@ export default {
         });
     };
 
-    const testPost = () => {
-      const payload = {
-        id: 7,
-        date: "2021-08-28",
-        train: [
-          {
-            load: 60,
-            rep: 8,
-            set: 5,
-          },
-        ],
-      };
-      // store.dispatch("postDataAction", testData);
-      axios
-        .post("https://fitness-api-server.herokuapp.com/squatdata/", payload)
-        .then(function(res) {
-          console.log("post");
-          store.dispatch("getSquatData");
-          // console.log(1);
-          // console.log(res.data);
-          // commit("postDataMutation", res.data);
-        })
-        .catch(function(e) {
-          console.log(e);
-        });
-    };
-
     const testDel = () => {
       const id = 7;
       // store.dispatch("deleteDataAction", delNum);
@@ -154,7 +127,6 @@ export default {
     return {
       squatData,
       editRecord,
-      testPost,
       testDel,
       triggerCollapse,
       isShow,
