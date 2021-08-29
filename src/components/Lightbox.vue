@@ -1,9 +1,15 @@
 <template>
   <h1>Lightbox</h1>
+  <Formfill />
 </template>
 
 <script>
-export default {};
+import Formfill from "./Formfill.vue";
+export default {
+  components: {
+    Formfill,
+  },
+};
 </script>
 
 <style></style>

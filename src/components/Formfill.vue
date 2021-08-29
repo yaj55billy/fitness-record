@@ -38,6 +38,7 @@
             v-model.number="list.rep"
           >
             <option value="" disabled selected>請選擇次數</option>
+            <option value="2">2</option>
             <!-- <option value="1" v-for="item in 30" :key="item" >1</option> -->
           </select>
         </div>
@@ -53,6 +54,7 @@
           >
             <option value="" disabled selected>請選擇組數</option>
             <option value="1">1</option>
+            <option value="2">2</option>
           </select>
         </div>
       </li>
@@ -67,7 +69,7 @@
         <i class="fas fa-times"></i>
       </a>
     </div>
-    <button type="button" class="btn">送出紀錄</button>
+    <button type="button" class="btn" @click="submit">送出紀錄</button>
   </form>
 </template>
 
@@ -86,6 +88,12 @@ export default {
       },
     ]);
 
+    const submitData = ref({
+      date: trainDate.value,
+      train: [],
+      totalTrain: 0,
+    });
+
     // onMounted(() => {});
 
     const addRecord = () => {
@@ -100,7 +108,14 @@ export default {
     };
 
     const submit = () => {
-      console.log(record);
+      // console.log(record.value);
+      record.value.forEach((item) => {
+        submitData.value.train.push(item);
+      });
+      console.log(submitData);
+      // console.log(submitData.value.train);
+      // const temp = submitData.value.train.push(record);
+      // console.log(temp);
     };
 
     return {

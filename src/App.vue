@@ -1,15 +1,3 @@
-<script>
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-
-export default {
-  components: {
-    Header,
-    Footer,
-  },
-};
-</script>
-
 <template>
   <Header />
   <main class="content">
@@ -19,5 +7,26 @@ export default {
   </main>
   <Footer />
 </template>
+
+<script>
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+import { onMounted, ref, computed } from "vue";
+import { useStore } from "vuex";
+
+export default {
+  components: {
+    Header,
+    Footer,
+  },
+  setup() {
+    const store = useStore();
+
+    onMounted(() => {
+      store.dispatch("getSquatData"); // init
+    });
+  },
+};
+</script>
 
 <style lang="scss"></style>
