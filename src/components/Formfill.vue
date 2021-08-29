@@ -73,9 +73,12 @@
 
 <script>
 import { onMounted, ref } from "vue";
+import { useStore } from "vuex";
 import { apiPostSquatData } from "@/api.js";
 export default {
   setup() {
+    const store = useStore();
+
     const trainDate = ref("");
 
     const getToday = () => {
@@ -130,10 +133,13 @@ export default {
         tempData.totalTrain += item.load * item.rep * item.set;
       });
 
+      store.dispatch("isLoadingHandler");
+
       apiPostSquatData(tempData)
         .then(function() {
-          console.log("post 成功");
-          // store.dispatch("getSquatData");
+          store.dispatch("getSquatData").then(() => {
+            store.dispatch("isLoadingHandler");
+          });
         })
         .catch(function(e) {
           console.log(e);

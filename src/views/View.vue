@@ -38,7 +38,24 @@
   <h2 class="page-title">圖表</h2>
 
   <Chart></Chart>
-  <Lightbox></Lightbox>
+  <Lightbox>
+    <!-- <template v-slot:header>
+      <h2>008JS 好棒棒!</h2>
+    </template>
+
+    <template v-slot:footer>
+      <h2>大家快來買！</h2>
+    </template>
+
+    <div>
+      <a
+        target="_blank"
+        href="https://www.tenlong.com.tw/products/9789864344130"
+        >購書傳送門</a
+      >
+    </div> -->
+    <Formfill></Formfill>
+  </Lightbox>
   <br />
   <br />
   <button type="button" @click="testPost">POST 按鈕</button>
@@ -50,6 +67,7 @@
 import Chart from "@/components/Chart.vue";
 import Lightbox from "@/components/Lightbox.vue";
 import axios from "axios";
+import Formfill from "@/components/Formfill.vue";
 
 import { onMounted, onUpdated, ref, computed } from "vue";
 import { useStore } from "vuex";
@@ -57,6 +75,7 @@ export default {
   components: {
     Chart,
     Lightbox,
+    Formfill,
   },
   setup() {
     const data = ref([]);

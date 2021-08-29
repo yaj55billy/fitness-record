@@ -1,13 +1,49 @@
 <template>
-  <h1>Lightbox</h1>
-  <Formfill />
+  <div class="lightbox">
+    <div class="modal-mask" :style="modalStyle">
+      <div class="modal-container" @click.self="toggleModal">
+        <div class="modal-body">
+          <header>
+            <slot name="header">Default Header</slot>
+          </header>
+          <hr />
+          <main>
+            <slot>Default Body</slot>
+          </main>
+          <hr />
+          <footer>
+            <slot name="footer">Default Footer</slot>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    <button @click="isShow = true">Click Me</button>
+  </div>
+  <!-- <Formfill /> -->
 </template>
 
 <script>
-import Formfill from "./Formfill.vue";
+// import Formfill from "./Formfill.vue";
 export default {
-  components: {
-    Formfill,
+  // components: {
+  //   Formfill,
+  // },
+  data: () => ({
+    isShow: false,
+  }),
+  computed: {
+    modalStyle() {
+      return {
+        display: this.isShow ? "" : "none",
+      };
+    },
+  },
+  methods: {
+    toggleModal() {
+      console.log("click");
+      this.isShow = !this.isShow;
+    },
   },
 };
 </script>
