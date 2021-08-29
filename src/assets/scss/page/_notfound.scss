@@ -1,0 +1,12 @@
+.not-found {
+  text-align: center;
+  color: $primary;
+
+  &__title {
+    font-size: $font-size-xl;
+  }
+  &__link {
+    font-size: $font-size-md;
+    text-decoration: underline;
+  }
+}

@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import Index from "../views/Index.vue";
 import Add from "../views/Add.vue";
 import View from "../views/View.vue";
+import NotFound from "../views/NotFound.vue";
 
 const routes = [
   {
@@ -19,6 +20,7 @@ const routes = [
     name: "View",
     component: View,
   },
+  { path: "/:pathMatch(.*)", component: NotFound },
 ];
 
 const router = createRouter({

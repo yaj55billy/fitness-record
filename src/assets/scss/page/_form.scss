@@ -9,8 +9,7 @@ select {
   border: solid 1px #ccc;
   border-radius: 4px;
   background-color: white;
-  // +text_set(16px,500,#555);
-  font-family: "微軟正黑體", "Microsoft JhengHei", serif;
+  font-family: $font-family;
   height: 32px;
   padding-left: 6px;
   transition: border 0.5s;

@@ -25,30 +25,6 @@ export const apiPutSquatData = (data) =>
 export const apiDeleteSquatData = (id) =>
   recordRequest.delete(`/squatdata/${id}`);
 
-// axios
-//   .put(`https://fitness-api-server.herokuapp.com/squatdata/${obj.id}`, obj)
-//   .then(function(res) {
-//     // console.log(res);
-//     store.dispatch("getSquatData");
-//     // console.log(res);
-//   })
-//   .catch(function(e) {
-//     console.log(e);
-//   });
-
-// axios
-//   .delete(`https://fitness-api-server.herokuapp.com/squatdata/${id}`)
-//   .then(function(res) {
-//     console.log("delete");
-//     store.dispatch("getSquatData");
-//     // console.log(1);
-//     // console.log(res);
-//     // commit("deleteDataMutation", id);
-//   })
-//   .catch(function(e) {
-//     console.log(e);
-//   });
-
 // recordRequest.interceptors.request.use(
 //   function(config) {
 //     return config;

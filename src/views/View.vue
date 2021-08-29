@@ -111,11 +111,11 @@ export default {
       squatData,
       listStatus,
       changeListStatus,
-      editRecord, // about edit
-      saveEditData, // about edit
-      editLightboxStatus, // about edit
-      changeLightboxStatus, // about lightbox
-      deleteRecord, // about delete
+      editRecord,
+      saveEditData,
+      editLightboxStatus,
+      changeLightboxStatus,
+      deleteRecord,
     };
   },
 };
