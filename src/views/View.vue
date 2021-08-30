@@ -35,8 +35,7 @@
     </ul>
   </transition>
   <br />
-  <h2 class="page-title">圖表</h2>
-
+  <!-- <h2 class="page-title">圖表</h2> -->
   <!-- <Chart></Chart> -->
   <Lightbox
     :lightboxStatus="editLightboxStatus"
