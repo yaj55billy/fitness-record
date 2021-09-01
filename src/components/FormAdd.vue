@@ -76,11 +76,12 @@ import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { apiPostSquatData } from "@/api.js";
+
+import recordHandler from "@/composition/recordHandler.js";
 export default {
   setup() {
     const store = useStore();
     const router = useRouter();
-
     const trainDate = ref("");
 
     const getToday = () => {
@@ -108,13 +109,9 @@ export default {
       },
     ]);
 
-    const addRecord = () => {
-      record.value.push({
-        load: 20,
-        rep: 1,
-        set: 1,
-      });
-    };
+    const { add } = recordHandler();
+
+    const addRecord = add(record.value);
 
     const removeRecord = () => {
       record.value.pop();

@@ -1,5 +1,5 @@
 <template>
-  <form action="" class="form">
+  <form class="form">
     <div class="form-group">
       <label for="trainDate" class="form-group__label">訓練日期</label>
       <input
@@ -7,12 +7,12 @@
         id="trainDate"
         name="trainDate"
         class="form-group__input"
-        v-model="props.passEditData.date"
+        v-model="getRecord.date"
       />
     </div>
     <ul class="form-train">
       <li
-        v-for="(list, index) in props.passEditData.train"
+        v-for="(list, index) in getRecord.train"
         :key="list"
         class="form-train__list"
       >
@@ -59,11 +59,9 @@
     </ul>
     <div class="form-conctrl">
       <a @click.prevent="addRecord" class="form-conctrl__btn">
-        <!-- 新增訓練 -->
         <i class="fas fa-plus"></i>
       </a>
       <a @click.prevent="removeRecord" class="form-conctrl__btn">
-        <!-- 刪除訓練 -->
         <i class="fas fa-times"></i>
       </a>
     </div>
@@ -76,20 +74,44 @@
 </template>
 
 <script>
+import { ref, watch } from "vue";
 import { useStore } from "vuex";
-import { apiPutSquatData } from "@/api.js";
+import { apiGetSingleSquatData, apiPutSquatData } from "@/api.js";
+// import recordHandler from "@/composition/recordHandler.js";
 export default {
   props: {
-    passEditData: {
-      type: Object,
+    passEditId: {
+      type: Number,
       required: true,
     },
   },
   emits: ["triggerBack"],
   setup(props, context) {
     const store = useStore();
+    const getRecord = ref({});
+
+    const triggerFunc = (id) => {
+      store.dispatch("isLoadingHandler");
+      apiGetSingleSquatData(id)
+        .then((res) => {
+          getRecord.value = res.data;
+          store.dispatch("isLoadingHandler");
+        })
+        .catch((e) => {});
+    };
+
+    watch(
+      () => props.passEditId,
+      (newIdx, oldIdx) => {
+        triggerFunc(newIdx);
+      }
+    );
+
+    // const { add } = recordHandler();
+    // const addRecord = add(getRecord.value.train);
+    // console.log(getRecord.value.train);
     const addRecord = () => {
-      props.passEditData.train.push({
+      getRecord.value.train.push({
         load: 20,
         rep: 1,
         set: 1,
@@ -97,18 +119,18 @@ export default {
     };
 
     const removeRecord = () => {
-      props.passEditData.train.pop();
+      getRecord.value.train.pop();
     };
 
     const submitRecord = () => {
       const tempData = {
-        id: props.passEditData.id,
-        date: props.passEditData.date,
-        train: props.passEditData.train,
+        id: getRecord.value.id,
+        date: getRecord.value.date,
+        train: getRecord.value.train,
         totalTrain: 0,
       };
 
-      props.passEditData.train.forEach((item, index, ary) => {
+      getRecord.value.train.forEach((item) => {
         if (item.load === "") {
           item.load = 0;
         }
@@ -130,7 +152,7 @@ export default {
     };
 
     return {
-      props,
+      getRecord,
       addRecord,
       removeRecord,
       submitRecord,

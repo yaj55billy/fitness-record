@@ -46,9 +46,10 @@
     </template>
     <template v-slot:main>
       <FormEdit
-        :passEditData="saveEditData"
+        :passEditId="editId"
         @triggerBack="changeLightboxStatus"
       ></FormEdit>
+      <!-- :passEditData="saveEditData" -->
     </template>
   </Lightbox>
   <br />
@@ -58,7 +59,7 @@
 // import Chart from "@/components/Chart.vue";
 import Lightbox from "@/components/Lightbox.vue";
 import FormEdit from "@/components/FormEdit.vue";
-import { apiGetSingleSquatData, apiDeleteSquatData } from "@/api.js";
+import { apiDeleteSquatData } from "@/api.js";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 export default {
@@ -74,6 +75,8 @@ export default {
     const saveEditData = ref({});
     const editLightboxStatus = ref(false);
 
+    const editId = ref(0);
+
     const changeListStatus = () => {
       listStatus.value = !listStatus.value;
     };
@@ -83,12 +86,8 @@ export default {
     };
 
     const editRecord = (id) => {
-      apiGetSingleSquatData(id)
-        .then((res) => {
-          saveEditData.value = res.data;
-          changeLightboxStatus();
-        })
-        .catch((e) => {});
+      changeLightboxStatus();
+      editId.value = id;
     };
 
     const deleteRecord = (id) => {
@@ -115,6 +114,7 @@ export default {
       editLightboxStatus,
       changeLightboxStatus,
       deleteRecord,
+      editId,
     };
   },
 };
