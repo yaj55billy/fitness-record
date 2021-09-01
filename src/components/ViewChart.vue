@@ -3,7 +3,7 @@ export default {};
 </script>
 
 <template>
-  <h1>圖表</h1>
+  <h2 class="page-title">圖表</h2>
 </template>
 
 <style></style>

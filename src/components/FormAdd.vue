@@ -124,7 +124,7 @@ export default {
         totalTrain: 0,
       };
 
-      record.value.forEach((item, index, ary) => {
+      record.value.forEach((item) => {
         tempData.train.push(item);
         if (item.load === "") {
           item.load = 0;
