@@ -1,15 +1,15 @@
 <template>
   <form class="form">
-    <!-- <div class="form-group">
+    <div class="form-group">
       <label for="trainDate" class="form-group__label">訓練日期</label>
       <input
         type="date"
         id="trainDate"
         name="trainDate"
         class="form-group__input"
-        v-model="getRecord.date"
+        v-model="trainDate"
       />
-    </div> -->
+    </div>
     <ul class="form-train">
       <li
         v-for="(list, index) in trainRecord"
@@ -74,9 +74,13 @@
 </template>
 
 <script>
-import { onMounted, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
-import { apiGetSingleSquatData, apiPutSquatData } from "@/api.js";
+import {
+  apiGetSingleSquatData,
+  apiPostSquatData,
+  apiPutSquatData,
+} from "@/api.js";
 
 export default {
   props: {
@@ -86,20 +90,31 @@ export default {
   },
   setup(props) {
     const store = useStore();
+    const squatDataLen = computed(() => store.getters.squatData.length);
 
     // new 的狀況
     const recordInit = { load: 20, rep: 1, set: 1 };
     let trainRecord = ref([recordInit]);
 
-    // const allData = ref({});
     const trainDate = ref("");
+
+    const getToday = () => {
+      const getDate = new Date(),
+        getYear = getDate.getFullYear(),
+        getMonth = getDate.getMonth() + 1,
+        getDay = getDate.getDate(),
+        today = `${getYear}-${(getMonth < 10 ? "0" : "") + getMonth}-${(getDay <
+        10
+          ? "0"
+          : "") + getDay}`;
+
+      trainDate.value = today;
+    };
 
     const getSingleData = (id) => {
       store.dispatch("isLoadingHandler");
       apiGetSingleSquatData(id)
         .then((res) => {
-          // allData.value = res.data;
-          // console.dir(res.data);
           trainRecord.value = res.data.train;
           trainDate.value = res.data.date;
           store.dispatch("isLoadingHandler");
@@ -114,6 +129,7 @@ export default {
       (currentValue) => {
         switch (currentValue) {
           case "new": // 新增
+            getToday();
             break;
           case "close": // 關閉重置
             trainRecord.value = [recordInit];
@@ -138,45 +154,57 @@ export default {
     };
 
     const submitRecord = () => {
-      // console.log(props);
-
       const { getFormStatus } = props;
-      console.log(getFormStatus);
-
-      // console.log(allData.value.id);
-      // console.log(allData.value.date);
 
       const tempData = {
-        id: getFormStatus === "new" ? 10 : getFormStatus,
-        date: getFormStatus === "new" ? "2021-09-10" : trainDate.value,
+        id: getFormStatus === "new" ? squatDataLen.value + 1 : getFormStatus,
+        date: trainDate.value,
         train: getFormStatus === "new" ? [] : trainRecord.value,
         totalTrain: 0,
       };
 
+      trainRecord.value.forEach((item) => {
+        if (getFormStatus === "new") {
+          tempData.train.push(item);
+        }
+        if (item.load === "") {
+          item.load = 0;
+        }
+        tempData.totalTrain += item.load * item.rep * item.set;
+      });
+
       console.log(tempData);
 
-      // getRecord.value.train.forEach((item) => {
-      //   if (item.load === "") {
-      //     item.load = 0;
-      //   }
-      //   tempData.totalTrain += item.load * item.rep * item.set;
-      // });
+      store.dispatch("isLoadingHandler");
 
-      // store.dispatch("isLoadingHandler");
-
-      // apiPutSquatData(tempData)
-      //   .then(() => {
-      //     store.dispatch("getSquatData").then(() => {
-      //       store.dispatch("isLoadingHandler");
-      //     });
-      //   })
-      //   .catch(function(e) {
-      //     console.log(e);
-      //   });
+      if (getFormStatus === "new") {
+        // 新增
+        apiPostSquatData(tempData)
+          .then(function() {
+            store.dispatch("getSquatData").then(() => {
+              store.dispatch("isLoadingHandler");
+            });
+          })
+          .catch(function(e) {
+            console.log(e);
+          });
+      } else {
+        // 編輯
+        apiPutSquatData(tempData)
+          .then(() => {
+            store.dispatch("getSquatData").then(() => {
+              store.dispatch("isLoadingHandler");
+            });
+          })
+          .catch(function(e) {
+            console.log(e);
+          });
+      }
     };
 
     return {
       trainRecord,
+      trainDate, // 日期
       addRecord,
       removeRecord,
       submitRecord,
