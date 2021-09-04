@@ -1,11 +1,15 @@
 <template>
-  <div class="lightbox" :class="{ open: props.lightboxStatus }">
-    <div class="modal-mask" @click.self="triggerBack">
+  <div class="lightbox" :class="{ open: modalStatus }">
+    <div class="modal-mask" @click.self="changeModalStatus('close')">
       <div class="modal-container">
         <div class="modal-body">
-          <i class="fas fa-times modal-close" @click.self="triggerBack"></i>
+          <i
+            class="fas fa-times modal-close"
+            @click.self="changeModalStatus('close')"
+          ></i>
           <header>
             <slot name="header">Default Header</slot>
+            <!-- <h2>Default Header</h2> -->
           </header>
           <hr />
           <main>
@@ -20,21 +24,26 @@
 <script>
 export default {
   props: {
-    lightboxStatus: {
+    new: {
       type: Boolean,
-      default: true,
     },
+    del: {
+      type: Boolean,
+    },
+    // lightboxStatus: {
+    //   type: Boolean,
+    //   default: true,
+    // },
   },
-  emits: ["triggerBack"],
+  // emits: ["triggerBack"],
   setup(props, context) {
-    const triggerBack = () => {
-      context.emit("triggerBack");
-    };
-
-    return {
-      props,
-      triggerBack,
-    };
+    // const triggerBack = () => {
+    //   context.emit("triggerBack");
+    // };
+    // return {
+    //   props,
+    //   triggerBack,
+    // };
   },
 };
 </script>

@@ -88,7 +88,8 @@ export default {
       type: [String, Number],
     },
   },
-  setup(props) {
+  emits: ["triggerModalClose"],
+  setup(props, context) {
     const store = useStore();
     const squatDataLen = computed(() => store.getters.squatData.length);
 
@@ -173,8 +174,6 @@ export default {
         tempData.totalTrain += item.load * item.rep * item.set;
       });
 
-      console.log(tempData);
-
       store.dispatch("isLoadingHandler");
 
       if (getFormStatus === "new") {
@@ -183,10 +182,12 @@ export default {
           .then(function() {
             store.dispatch("getSquatData").then(() => {
               store.dispatch("isLoadingHandler");
+              context.emit("triggerModalClose");
             });
           })
           .catch(function(e) {
             console.log(e);
+            store.dispatch("isLoadingHandler");
           });
       } else {
         // 編輯
@@ -194,10 +195,12 @@ export default {
           .then(() => {
             store.dispatch("getSquatData").then(() => {
               store.dispatch("isLoadingHandler");
+              context.emit("triggerModalClose");
             });
           })
           .catch(function(e) {
             console.log(e);
+            store.dispatch("isLoadingHandler");
           });
       }
     };
