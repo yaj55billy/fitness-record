@@ -10,29 +10,27 @@
 
 (最初想法是以 Node.js 搭配 mongoDB 做後端部分，然後用 React Native 來處理前端部分)
 
-## 畫面
+## 畫面 (9/5 更動)
 
-從左至右為: 首頁、新增紀錄頁、查看紀錄頁，目前專案的運動項目先以深蹲單項為主。
-
-![專案畫面](https://i.imgur.com/dRS1VZ8.jpg)
+![專案畫面](https://i.imgur.com/logyWq3.jpg)
 
 ## 程式架構(檔案)
 
-使用 **Vue CLI** 建構環境，並且也引入了 **Router、Vuex** 來處理路由跟資料共用(管理)的部分，也透過 src/api.js 這支檔案統一**管理 API** 部分，讓 API 不會散落在各元件內。目前撰寫上使用 Vue3 的 **Composition API**。
+使用 **Vue CLI** 建構環境，並且也引入了 **Router、Vuex** 來處理路由跟資料共用(管理)的部分，也透過 src/api.js 這支檔案統一**管理 API** 部分，讓 API 不會散落在各元件內。目前撰寫上使用 Vue3 的 **Composition API**，也將有些**邏輯封裝**並引入到需使用的元件中。
 
-#### 頁面內容:
+#### 頁面內容: (9/5 更動)
 
-- App.vue: root
-  - 在 App.vue 這個 root 中引入 vue-loading-overlay (plugin)，並**搭配 Vuex 的狀態**實作出頁面 loading。
-  - 在 onMounted lifecycle 中去觸發 Vuex 拿取資料(api get)。
-- Add.vue: 新增訓練紀錄頁
-  - 引入了 FormAdd 元件，可對於紀錄項目做新增、刪除，最後匯集並送出紀錄(api post)。
-- View.vue: 查看訓練紀錄頁
-  - 引入了 Lightbox、FormEdit 兩元件，並搭配父子元件的資料傳遞(**Props、Emit**)去實作出編輯的功能。
-  - FormEdit 頁面上與功能類似於 FormAdd 的元件，此元件接收外層資料並編輯後，最後送出紀錄(api put)。
-  - 在頁面上方的列表紀錄中，也搭配 **transition** 來處理收合動態。
 - Index.vue: 首頁
 - NotFound.vue: 當使用者隨意輸入不存在的路由，則統一導向此元件(畫面)。
+- View.vue: 訓練紀錄頁 (新增、編輯、刪除)
+  - 在 onMounted lifecycle 中去觸發 Vuex 拿取資料(api get)。
+  - 引入 vue-loading-overlay (plugin)，並**搭配 Vuex 的狀態**實作出頁面 loading。
+  - 引入了 ViewList、ViewChart 兩元件，處理列表跟圖表的畫面。
+  - ViewList
+    - 列表紀錄搭配 **transition** 來處理收合動態。
+    - 引入 UpdateForm 的元件，透過父子元件的資料傳遞(**Props、Emit**)加上判斷來新增或編輯資料。(api post、api put)
+  - ViewChart
+    - 引入 echarts (plugin)
 
 #### SCSS:
 
@@ -44,10 +42,8 @@
 
 (layout 上較為單純，所以 SCSS 檔案沒有拆到很細)
 
-## 預期優化與思考方向 8/30
+## 預期優化與思考方向 (9/5 更動)
 
-- 在新增與編輯紀錄中，如果沒有紀錄的項目還是可以送出紀錄。(Bug)
-- 在查看紀錄頁下方新增圖表區塊。(優化)
 - 日期部分的處理。(優化)
-- FormAdd.vue、FormEdit.vue 元件相關處理。(優化)
+- UpdateForm 元件邏輯拆分。(優化)
 - 登入功能...
