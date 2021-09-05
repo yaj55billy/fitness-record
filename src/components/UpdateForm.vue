@@ -65,7 +65,7 @@
         <i class="fas fa-times"></i>
       </a>
     </div>
-    <div class="form-submit">
+    <div class="form-submit" :style="{ display: submitStatus }">
       <button type="button" class="btn btn-lg" @click="submitRecord">
         送出紀錄
       </button>
@@ -92,6 +92,8 @@ export default {
   setup(props, context) {
     const store = useStore();
     const squatDataLen = computed(() => store.getters.squatData.length);
+
+    let submitStatus = ref("block");
 
     // new 的狀況
     const recordInit = { load: 20, rep: 1, set: 1 };
@@ -138,6 +140,17 @@ export default {
           default:
             // 編輯 (pass id)
             getSingleData(currentValue);
+        }
+      }
+    );
+
+    watch(
+      () => trainRecord.value.length,
+      (newIdx) => {
+        if (newIdx === 0) {
+          submitStatus.value = "none";
+        } else {
+          submitStatus.value = "block";
         }
       }
     );
@@ -206,6 +219,7 @@ export default {
     };
 
     return {
+      submitStatus,
       trainRecord,
       trainDate, // 日期
       addRecord,

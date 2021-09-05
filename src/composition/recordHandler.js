@@ -1,25 +1,25 @@
 import { ref } from "vue";
 
-export default function() {
-  const getAry = (ary) => {
-    // 變動
-    return ary;
-  };
+// export default function() {
+//   const getAry = (ary) => {
+//     // 變動
+//     return ary;
+//   };
 
-  const add = (ary) => {
-    return function() {
-      getAry(ary).push({
-        load: 20,
-        rep: 1,
-        set: 1,
-      });
-    };
-  };
+//   const add = (ary) => {
+//     return function() {
+//       getAry(ary).push({
+//         load: 20,
+//         rep: 1,
+//         set: 1,
+//       });
+//     };
+//   };
 
-  return {
-    add,
-  };
-}
+//   return {
+//     add,
+//   };
+// }
 
 // export const test = function(ary) {
 //   ary.push({

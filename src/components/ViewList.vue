@@ -7,7 +7,7 @@
       @click.prevent="changeListStatus"
     ></i>
   </h2>
-  <div style="text-align: right">
+  <div class="page-topbtn">
     <a class="btn btn-sm" @click.prevent="changeUpdateModalStatus('new')"
       >新增紀錄</a
     >

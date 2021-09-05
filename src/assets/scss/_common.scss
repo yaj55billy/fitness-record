@@ -112,6 +112,13 @@ img {
   }
 }
 
+.page-topbtn {
+  text-align: right;
+  .btn {
+    margin: 0;
+  }
+}
+
 * {
   outline: none;
   box-sizing: border-box;
