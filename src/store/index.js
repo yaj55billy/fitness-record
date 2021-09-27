@@ -34,5 +34,14 @@ export default createStore({
     isLoading(state) {
       return state.isLoading;
     },
+    squatDataReverse(state) {
+      return state.squatData.reverse();
+    },
+    dateData(state, getters) {
+      return getters.squatDataReverse.map((item) => item.date);
+    },
+    trainData(state, getters) {
+      return getters.squatDataReverse.map((item) => item.totalTrain);
+    },
   },
 });
